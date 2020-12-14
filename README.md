@@ -1,4 +1,2 @@
 # Java
-Meu repositório de Java.
-
-teste
+Meu repositório privado de Java.
