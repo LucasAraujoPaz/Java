@@ -29,24 +29,6 @@ public class Avaliador {
     public Avaliador(){
     }
 
-    /**
-     * @param args the command line arguments
-     */
-
-    public static void main(String[] args) {
-        // TODO code application logic here
-        Avaliador a = new Avaliador();
-
-        a.criarVariavel("x", 2);
-        a.criarVariavel("y", "x");
-
-        String expressao = " x + 2^3 - 4";
-        double resultado = a.avaliar("1.0 + x*(0.10050167084167949 + (x - 0.1)*(1.0355220012026156 + (x - 0.2)*(0.3154103967582741 + (x - 0.3)*(0.6157137452608447 + (x - 0.4)*(0.2974935647932986 + (x - 0.5)*(0.2984938717399314 + (x - 0.6)*(0.17544641586493723 + (x - 0.7)*(0.1309907896501212 + (x - 0.8)*(0.08099099843843592 + (x - 0.9)*0.05296407341498298)))))))))");
-        double x =2;
-        System.out.println(1.0 + x*(0.10050167084167949 + (x - 0.1)*(1.0355220012026156 + (x - 0.2)*(0.3154103967582741 + (x - 0.3)*(0.6157137452608447 + (x - 0.4)*(0.2974935647932986 + (x - 0.5)*(0.2984938717399314 + (x - 0.6)*(0.17544641586493723 + (x - 0.7)*(0.1309907896501212 + (x - 0.8)*(0.08099099843843592 + (x - 0.9)*0.05296407341498298))))))))));
-        System.out.println(resultado);
-    }
-    
     /**Método principal, avalia uma expressão matemática e retorna o valor resultante.
      * <p>Pode receber números, variáveis já declaradas e parêntesis.</p>
      * @param expressao Expressão matemática.
