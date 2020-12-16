@@ -1,2 +1,2 @@
 # Java
-Meu repositório privado de Java.
+Meu repositório de Java com projetos de minha autoria.
