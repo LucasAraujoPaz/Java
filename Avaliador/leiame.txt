@@ -1,0 +1,19 @@
+O arquivo Avaliador é uma classe Java (servindo de API quando instanciada) que:
+
+Avalia uma expressão matemática com ou sem variáveis previamente definidas pelo usuário.
+
+O modelo de número é tradicional: +(ou)-123.456E+(ou)-789
+
+Obs.: '+' e '-' e a notação científica são opcionais, 'E' sempre maiúsculo.
+
+As variáveis recebem como valor um número (double) ou uma expressão matemática (String), a qual pode até citar outras variáveis.
+
+Cuidado, pois pode haver loop se os valores das variáveis ficarem referenciando outras variáveis indefinidamente.
+
+Operadores: ^ (Exponenciação), * , / , % (MOD), + , -
+
+Se o usuário cometer erros de sintaxe, esta classe lança erros tipo "Error" com mensagem personalizada.
+
+Segue também uma pasta com javadoc.
+
+@author Lucas Paz.
