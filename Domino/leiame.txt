@@ -30,3 +30,5 @@ O computador demora um pouquinho de tempo para jogar para facilitar o entendimen
 O usuário sempre pode mostrar o jogo do computador por curiosidade e ocultá-lo de volta.
 
 O "terminal" embaixo relata as ações e regras do jogo.
+
+@author Lucas Paz.
