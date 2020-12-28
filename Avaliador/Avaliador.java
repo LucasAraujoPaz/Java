@@ -776,7 +776,7 @@ public class Avaliador {
 
     /**Muda o valor de uma variável já criada para um novo número.
      * <p>Para mudar o valor para uma nova expressão matemática, use o método homônimo.</p>
-     * @see mudarValorDeVariavel(String, String)
+     * @see #mudarValorDeVariavel(String, String)
      * @param nomeDaVariavel Nome da variável a ter seu valor mudado.
      * @param valorNovo Número que será o novo valor da variável.
      * @throws Error Erro personalizado se o nome vier vazio ou a variável não existir.
@@ -793,7 +793,7 @@ public class Avaliador {
     /**Muda o valor de uma variável já criada para uma nova expressão matemática.
      * <p>Cuidado, pois pode haver loop se os valores das variáveis ficarem referenciando outras variáveis indefinidamente.</p>
      * <p>Para mudar o valor para um novo número, use o método homônimo.</p>
-     * @see mudarValorDeVariavel(String, double)
+     * @see #mudarValorDeVariavel(String, double)
      * @param nomeDaVariavel Nome da variável a ter seu valor mudado.
      * @param expressaoNova Expressão matemática que será o novo valor da variável.
      * @throws Error Erro personalizado se o nome vier vazio ou a variável não existir.
