@@ -27,6 +27,9 @@ public class Avaliador {
 
     private static final ArrayList<Character> TODOS_OS_CARACTERES_ACEITOS_NO_AVALIADOR = new ArrayList(Arrays.asList(new Character[]{'+','-','0','1','2','3','4','5','6','7','8','9','.','E','(',')','^','*','/','%','+','-','$','_','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',' '})); //Símbolos base da classe (inclui espaco, _ e $)
 
+    /**Construtor vazio.<br>
+     * Realize as avaliações de expressões matemáticas através do objeto instanciado.
+     */
     public Avaliador() {
     }
 
@@ -182,7 +185,8 @@ public class Avaliador {
                     String primeiroPedacoDaString = expressao.substring(0, i);
                     String segundoPedacoDaString = (posicaoFinalDaVariavel != expressao.length()-1)?expressao.substring(posicaoFinalDaVariavel+1, expressao.length()):"";
 
-                    expressao = primeiroPedacoDaString + revelarValorDaVariavel(i, posicaoFinalDaVariavel, expressao) + segundoPedacoDaString;
+                    String variavel = "(" + revelarValorDaVariavel(i, posicaoFinalDaVariavel, expressao) + ")";
+                    expressao = primeiroPedacoDaString + variavel + segundoPedacoDaString;
 
                     if (segundoPedacoDaString.equals("")) break;
                 }
@@ -388,6 +392,11 @@ public class Avaliador {
      * @return Resultado.
      */
     private double resolverCadeiaDeExpoentes(int posicaoInicialDaCadeia, int posicaoDoPrimeiroOperador, String expressao) throws Error {
+        //cuidado com "-x^n" (vs (-x)^n)
+        if (expressao.charAt(posicaoInicialDaCadeia) == '-' && (posicaoInicialDaCadeia == 0 || expressao.charAt(posicaoInicialDaCadeia - 1) != '^')){
+            return -1 * resolverCadeiaDeExpoentes(posicaoInicialDaCadeia + 1, posicaoDoPrimeiroOperador, expressao);
+        }
+
         double resultado=0;
         //Primeiro operador naturalmente é ^
         Character segundoOperador = '0'; //pode nao existir //acharOSegundoOperadorAdiante(posicaoDoPrimeiroOperador, expressao);
@@ -561,8 +570,7 @@ public class Avaliador {
 
         return resultado;
     }
-    
-    /**x+(...)-y+...*/
+
      /**
      * Resolve uma cadeia de '+' e '-': x+(...)-y+...<br>
      * Caso após esta cadeia haja outros operadores, recorre aos métodos das outras cadeias.
