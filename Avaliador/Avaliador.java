@@ -9,7 +9,7 @@ import java.util.Arrays;
 * <p>As variáveis recebem como valor um número (double) ou uma expressão matemática (String), a qual pode até citar outras variáveis.</p>
 * <br>Cuidado, pois pode haver loop se os valores das variáveis ficarem referenciando outras variáveis indefinidamente.
 * <p>Operadores: ^ (Exponenciação), * , / , % (MOD), + , - </p>
-* <p>Se o usuário cometer erros de sintaxe, esta classe lança erros tipo "Error" com mensagem personalizada.</p>
+* <p>Se o usuário cometer erros de sintaxe, esta classe lança erros com mensagem personalizada.</p>
 * 
 * @author Lucas Paz
 */
@@ -18,12 +18,12 @@ public class Avaliador {
     private ArrayList<String> nomesDasVariaveis = new ArrayList(){};
     private ArrayList<String> valoresDasVariaveis = new ArrayList(){}; //<String>, pois pode receber até expressões
 
-    private static final ArrayList<Character> NUMEROS = new ArrayList(Arrays.asList(new Character[]{'0','1','2','3','4','5','6','7','8','9'}));
-    private static final ArrayList<Character> CARACTERES_ACEITOS_EM_NUMEROS = new ArrayList(Arrays.asList(new Character[]{'+','-','0','1','2','3','4','5','6','7','8','9','.','E'})); // E = (notação científica)
-    private static final ArrayList<Character> CARACTERES_ACEITOS_EM_VARIAVEIS = new ArrayList(Arrays.asList(new Character[]{'_','$','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9'}));
-    private static final ArrayList<Character> OPERADORES = new ArrayList(Arrays.asList(new Character[]{'^','*','/','%','+','-'}));// "^" exponencia
+    public static final ArrayList<Character> NUMEROS = new ArrayList(Arrays.asList(new Character[]{'0','1','2','3','4','5','6','7','8','9'}));
+    public static final ArrayList<Character> CARACTERES_ACEITOS_EM_NUMEROS = new ArrayList(Arrays.asList(new Character[]{'+','-','0','1','2','3','4','5','6','7','8','9','.','E'})); // E = (notação científica)
+    public static final ArrayList<Character> CARACTERES_ACEITOS_EM_VARIAVEIS = new ArrayList(Arrays.asList(new Character[]{'_','$','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9'}));
+    public static final ArrayList<Character> OPERADORES = new ArrayList(Arrays.asList(new Character[]{'^','*','/','%','+','-'}));// "^" exponencia
 
-    private static final ArrayList<Character> LETRAS = new ArrayList(Arrays.asList(new Character[]{'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'}));
+    public static final ArrayList<Character> LETRAS = new ArrayList(Arrays.asList(new Character[]{'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'}));
 
     private static final ArrayList<Character> TODOS_OS_CARACTERES_ACEITOS_NO_AVALIADOR = new ArrayList(Arrays.asList(new Character[]{'+','-','0','1','2','3','4','5','6','7','8','9','.','E','(',')','^','*','/','%','+','-','$','_','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',' '})); //Símbolos base da classe (inclui espaco, _ e $)
 
@@ -37,9 +37,9 @@ public class Avaliador {
      * <p>Pode receber números, variáveis já declaradas e parêntesis.</p>
      * @param expressao Expressão matemática.
      * @return Resultado final.
-     * @throws Error Erro personalizado se o usuário cometer erro.
+     * @throws IllegalArgumentException Erro personalizado se o usuário cometer erro.
      */
-    public double avaliar(String expressao) throws Error {
+    public double avaliar(String expressao) throws IllegalArgumentException {
         double resultadoFinal=0;
 
         preValidarExpressao(expressao); //Pré-validação para encontrar erros básicos
@@ -57,15 +57,16 @@ public class Avaliador {
      * Pre-validação. Não checa já números e variáveis, que são checados em outros métodos durante a avaliação.
      * @param expressao Expressão matemática.
      * @return Se a expressão está sem erros em pré-validação.
+     * @throws IllegalArgumentException
      */
-    private boolean preValidarExpressao(String expressao) throws Error {
+    private boolean preValidarExpressao(String expressao) throws IllegalArgumentException {
         boolean valida = true;//caso a expressão esteja errada, este método lançará um erro personalizado, senão retornará true
         String expressaoSemEspacos = expressao.replaceAll(" ", "");//tira os espaços
 
-        if (expressaoSemEspacos.equals("")) throw new Error("Expressão vazia");
+        if (expressaoSemEspacos.equals("")) throw new IllegalArgumentException("Expressão vazia");
 
         Character primeiroCharAposEspacos = expressaoSemEspacos.charAt(0);        
-        if ( ! CARACTERES_ACEITOS_EM_VARIAVEIS.contains(primeiroCharAposEspacos) && primeiroCharAposEspacos != '(' && primeiroCharAposEspacos != '+' && primeiroCharAposEspacos != '-') throw new Error("Primeiro caracter mal colocado");
+        if ( ! CARACTERES_ACEITOS_EM_VARIAVEIS.contains(primeiroCharAposEspacos) && primeiroCharAposEspacos != '(' && primeiroCharAposEspacos != '+' && primeiroCharAposEspacos != '-') throw new IllegalArgumentException("Primeiro caracter mal colocado");
 
         int parentesisAbertos = 0;
         for (int i = 0; i < expressao.length(); i++) {
@@ -73,11 +74,11 @@ public class Avaliador {
             Character charAntesDosEspacos = acharProximosCaracteresPulandoEspacos(i, expressao)[0];
             Character charDepoisDosEspacos = acharProximosCaracteresPulandoEspacos(i, expressao)[1];
 
-            if (!TODOS_OS_CARACTERES_ACEITOS_NO_AVALIADOR.contains(c)) throw new Error("Caracter '" + c + "' não aceito");
+            if (!TODOS_OS_CARACTERES_ACEITOS_NO_AVALIADOR.contains(c)) throw new IllegalArgumentException("Caracter '" + c + "' não aceito");
             else if (c == ' '){
                 if (i == 0 || i == expressao.length()-1) continue;
                 else {
-                    if (CARACTERES_ACEITOS_EM_VARIAVEIS.contains(charAntesDosEspacos) && CARACTERES_ACEITOS_EM_VARIAVEIS.contains(charDepoisDosEspacos)) throw new Error("Espaçamento mal colocado");
+                    if (CARACTERES_ACEITOS_EM_VARIAVEIS.contains(charAntesDosEspacos) && CARACTERES_ACEITOS_EM_VARIAVEIS.contains(charDepoisDosEspacos)) throw new IllegalArgumentException("Espaçamento mal colocado");
                 }
             } else if (NUMEROS.contains(c) && i != expressao.length()-1){
                 if (i == 0) acharPosicaoFinalDoNumero(i, expressao);
@@ -86,23 +87,23 @@ public class Avaliador {
                     if (charUmaAntes == '(' || charUmaAntes == ' ' || OPERADORES.contains(charUmaAntes)) acharPosicaoFinalDoNumero(i, expressao);
                 }
             } else if (c == '+' || c == '-') {
-                if ((charAntesDosEspacos == '+' || charAntesDosEspacos == '-') && (charDepoisDosEspacos == '+' || charDepoisDosEspacos == '-')) throw new Error("Operador mal colocado");
-                else if (charDepoisDosEspacos == '¬' || charDepoisDosEspacos == ')' || charDepoisDosEspacos == '^' || charDepoisDosEspacos == '*' || charDepoisDosEspacos == '/' || charDepoisDosEspacos == '%') throw new Error("Operador mal colocado");
-                else if (expressao.charAt(i+1) == c) throw new Error("Operador mal colocado");
+                if ((charAntesDosEspacos == '+' || charAntesDosEspacos == '-') && (charDepoisDosEspacos == '+' || charDepoisDosEspacos == '-')) throw new IllegalArgumentException("Operador mal colocado");
+                else if (charDepoisDosEspacos == '¬' || charDepoisDosEspacos == ')' || charDepoisDosEspacos == '^' || charDepoisDosEspacos == '*' || charDepoisDosEspacos == '/' || charDepoisDosEspacos == '%') throw new IllegalArgumentException("Operador mal colocado");
+                else if (expressao.charAt(i+1) == c) throw new IllegalArgumentException("Operador mal colocado");
             } else if (c == '^' || c == '*' || c == '/' || c == '%') {
-                if ( ! CARACTERES_ACEITOS_EM_VARIAVEIS.contains(charAntesDosEspacos) && charAntesDosEspacos != ')') throw new Error("Operador mal colocado");
-                else if ( ! CARACTERES_ACEITOS_EM_VARIAVEIS.contains(charDepoisDosEspacos) && charDepoisDosEspacos != '(' && charDepoisDosEspacos != '+' && charDepoisDosEspacos != '-') throw new Error("Operador mal colocado");
+                if ( ! CARACTERES_ACEITOS_EM_VARIAVEIS.contains(charAntesDosEspacos) && charAntesDosEspacos != ')') throw new IllegalArgumentException("Operador mal colocado");
+                else if ( ! CARACTERES_ACEITOS_EM_VARIAVEIS.contains(charDepoisDosEspacos) && charDepoisDosEspacos != '(' && charDepoisDosEspacos != '+' && charDepoisDosEspacos != '-') throw new IllegalArgumentException("Operador mal colocado");
             } else if (c == '('){
                 parentesisAbertos++;
                 acharPosicaoFinalDosParentesis(i, expressao);
-                if (charAntesDosEspacos == ')' || charDepoisDosEspacos == ')' || (charAntesDosEspacos != '(' && charAntesDosEspacos != '¬' && !OPERADORES.contains(charAntesDosEspacos))) throw new Error("Parêntesis mal colocado");
+                if (charAntesDosEspacos == ')' || charDepoisDosEspacos == ')' || (charAntesDosEspacos != '(' && charAntesDosEspacos != '¬' && !OPERADORES.contains(charAntesDosEspacos))) throw new IllegalArgumentException("Parêntesis mal colocado");
             } else if (c == ')') {
-                if (parentesisAbertos < 1) throw new Error("Parêntesis mal colocado");
+                if (parentesisAbertos < 1) throw new IllegalArgumentException("Parêntesis mal colocado");
                 else parentesisAbertos--;
 
-                if (charAntesDosEspacos == '(' || charDepoisDosEspacos == '(' || (charDepoisDosEspacos != ')' && charDepoisDosEspacos != '¬' && !OPERADORES.contains(charDepoisDosEspacos))) throw new Error("Parêntesis mal colocado");
+                if (charAntesDosEspacos == '(' || charDepoisDosEspacos == '(' || (charDepoisDosEspacos != ')' && charDepoisDosEspacos != '¬' && !OPERADORES.contains(charDepoisDosEspacos))) throw new IllegalArgumentException("Parêntesis mal colocado");
             } else if (c == '.'){
-                if ( ! NUMEROS.contains(charAntesDosEspacos) || ! NUMEROS.contains(charDepoisDosEspacos)) throw new Error("Ponto mal colocado");
+                if ( ! NUMEROS.contains(charAntesDosEspacos) || ! NUMEROS.contains(charDepoisDosEspacos)) throw new IllegalArgumentException("Ponto mal colocado");
             }
         }
 
@@ -115,7 +116,7 @@ public class Avaliador {
      * @param expressao Expressão matemática.
      * @return EsquerdaEDireita[0] é o 1º char à esquerda, EsquerdaEDireita[1] é o 1º char à direita.
      */
-    private Character[] acharProximosCaracteresPulandoEspacos(int posicaoInicial, String expressao) throws Error {
+    private Character[] acharProximosCaracteresPulandoEspacos(int posicaoInicial, String expressao) {
         Character[] EsquerdaEDireita = {'¬', '¬'}; //EsquerdaEDireita[0] é o 1º char à esquerda, EsquerdaEDireita[1] é o 1º char à direita
 
         for (int esquerda = posicaoInicial; esquerda >= 0; esquerda--) {
@@ -142,13 +143,14 @@ public class Avaliador {
      * @param posicaoInicialDoParentesis Posição do parêntesis de abertura.
      * @param expressao Expressão matemática.
      * @return Posição do parêntesis final.
+     * @throws IllegalArgumentException
      */
-    private int acharPosicaoFinalDosParentesis(int posicaoInicialDoParentesis, String expressao) throws Error {
+    private int acharPosicaoFinalDosParentesis(int posicaoInicialDoParentesis, String expressao) throws IllegalArgumentException {
         int posicaoFinalDoParentesis = posicaoInicialDoParentesis;
         int parentesisAbertos = 0;
         int parentesisFechados = 0;
 
-        if (expressao.charAt(posicaoInicialDoParentesis) != '(') throw new Error("Erro interno: Não começou no parêntesis aberto");
+        if (expressao.charAt(posicaoInicialDoParentesis) != '(') throw new IllegalArgumentException("Erro interno: Não começou no parêntesis aberto");
 
         for (int i = posicaoInicialDoParentesis; i < expressao.length(); i++) {
             char c = expressao.charAt(i);
@@ -157,14 +159,14 @@ public class Avaliador {
             if (c == '(') parentesisAbertos++;
             else if (c == ')') parentesisFechados++;
 
-          //if (parentesisFechados > parentesisAbertos) throw new Error("Parêntesis mal colocado");desnecessario
+          //if (parentesisFechados > parentesisAbertos) throw new IllegalArgumentException("Parêntesis mal colocado");desnecessario
             if (parentesisFechados == parentesisAbertos) {
                 posicaoFinalDoParentesis = i;
                 break;
             }
         }
-        if (parentesisFechados != parentesisAbertos) throw new Error("Parêntesis incompletos");
-        //else if (expressao.charAt(posicaoFinalDoParentesis) != ')') throw new Error("Não terminou no parêntesis fechado");desnecessario
+        if (parentesisFechados != parentesisAbertos) throw new IllegalArgumentException("Parêntesis incompletos");
+        //else if (expressao.charAt(posicaoFinalDoParentesis) != ')') throw new IllegalArgumentException("Não terminou no parêntesis fechado");desnecessario
 
         return posicaoFinalDoParentesis;
     }
@@ -175,8 +177,9 @@ public class Avaliador {
     * Cuidado, pois pode haver loop se os valores das variáveis ficarem referenciando outras variáveis indefinidamente.
     * @param expressao Expressão matemática (Possivelmente com variáveis).
     * @return Expressão matemática com as variáveis convertidas em números.
+    * @throws IllegalArgumentException
     */
-    private String converterTodasAsVariaveis(String expressao) throws Error {
+    private String converterTodasAsVariaveis(String expressao) throws IllegalArgumentException {
         for (int i = 0; i < expressao.length(); i++) {
             char c = expressao.charAt(i);
             if (LETRAS.contains(c) || c == '_' || c == '$'){//retira fora a variavel e coloca o valor dela no lugar
@@ -201,13 +204,14 @@ public class Avaliador {
      * @param posicaoInicialDaVariavel Posição do começo da variável.
      * @param expressao Expressão matemática.
      * @return Posição do fim da variável (inclusive).
+     * @throws IllegalArgumentException
      */
-    private int acharPosicaoFinalDaVariavel(int posicaoInicialDaVariavel, String expressao) throws Error {
+    private int acharPosicaoFinalDaVariavel(int posicaoInicialDaVariavel, String expressao) throws IllegalArgumentException {
         int posicaoFinalDaVariavel = posicaoInicialDaVariavel;
 
         char primeiroCharDaVariavel = expressao.charAt(posicaoInicialDaVariavel);
-        if (primeiroCharDaVariavel != '_' && primeiroCharDaVariavel != '$' && !LETRAS.contains(primeiroCharDaVariavel)) throw new Error("Erro interno: Primeiro char da variável errado");//caso o primeiro char seja errado
-        else if (posicaoInicialDaVariavel != 0 && expressao.charAt(posicaoInicialDaVariavel - 1) == ')') throw new Error("Parêntesis mal colocado");
+        if (primeiroCharDaVariavel != '_' && primeiroCharDaVariavel != '$' && !LETRAS.contains(primeiroCharDaVariavel)) throw new IllegalArgumentException("Primeiro char da variável errado");//caso o primeiro char seja errado
+        else if (posicaoInicialDaVariavel != 0 && expressao.charAt(posicaoInicialDaVariavel - 1) == ')') throw new IllegalArgumentException("Parêntesis mal colocado");
 
         for (int i = posicaoInicialDaVariavel + 1; i < expressao.length(); i++) {
             char c = expressao.charAt(i);
@@ -219,7 +223,7 @@ public class Avaliador {
 
         if (posicaoFinalDaVariavel != expressao.length()-1) {
             char charDepoisDoNumero = expressao.charAt(posicaoFinalDaVariavel + 1);
-            if (charDepoisDoNumero != ')' && !OPERADORES.contains(charDepoisDoNumero)) throw new Error("'" + charDepoisDoNumero + "'" + " mal colocado");
+            if (charDepoisDoNumero != ')' && !OPERADORES.contains(charDepoisDoNumero)) throw new IllegalArgumentException("'" + charDepoisDoNumero + "'" + " mal colocado");
         }
 
         return posicaoFinalDaVariavel;
@@ -233,11 +237,11 @@ public class Avaliador {
      * @param posicaoFinalDaVariavel Posição do fim da variável (inclusive).
      * @param expressao Expressão matemática.
      * @return Valor numérico da variável.
-     * @throws Error 
+     * @throws IllegalArgumentException 
      */
-    private double revelarValorDaVariavel(int posicaoInicialDaVariavel, int posicaoFinalDaVariavel, String expressao) throws Error {
+    private double revelarValorDaVariavel(int posicaoInicialDaVariavel, int posicaoFinalDaVariavel, String expressao) throws IllegalArgumentException {
         String nomeDaVariavel = expressao.substring(posicaoInicialDaVariavel, posicaoFinalDaVariavel+1);
-        if (nomesDasVariaveis.indexOf(nomeDaVariavel) == -1) throw new Error("Variável '" + nomeDaVariavel + "' não declarada");
+        if (nomesDasVariaveis.indexOf(nomeDaVariavel) == -1) throw new IllegalArgumentException("Variável '" + nomeDaVariavel + "' não declarada");
         String expressaoDoValorDaVariavel = valoresDasVariaveis.get(nomesDasVariaveis.indexOf(nomeDaVariavel));
         double valorJaAvaliadoDaVariavel=0;
         try {
@@ -255,8 +259,9 @@ public class Avaliador {
      * Método base que começa a resolução de uma expressão matemática.
      * @param expressao Expressão matemática.
      * @return Resultado.
+     * @throws IllegalArgumentException
      */
-    private Double resolverExpressao(String expressao) throws Error {
+    private Double resolverExpressao(String expressao) throws IllegalArgumentException {
         Double resultado = 0d;
         int posicaoFinal = -1; //posicao final do resultado ou da variavel (lembrar de pular mais uma casa se necessario)
 
@@ -298,13 +303,14 @@ public class Avaliador {
      * @param posicaoInicialDoNumero Posição do começo do número.
      * @param expressao Expressão matemática.
      * @return Posição do fim do número (inclusive).
+     * @throws IllegalArgumentException
      */
-    private int acharPosicaoFinalDoNumero(int posicaoInicialDoNumero, String expressao) throws Error {
+    private int acharPosicaoFinalDoNumero(int posicaoInicialDoNumero, String expressao) throws IllegalArgumentException {
         int posicaoFinalDoNumero = posicaoInicialDoNumero;
 
         char primeiroCharDoNumero = expressao.charAt(posicaoInicialDoNumero);
-        if ( ! CARACTERES_ACEITOS_EM_NUMEROS.contains(primeiroCharDoNumero)) throw new Error("Erro interno: Primeiro char errado");//caso o primeiro char seja errado
-        else if (posicaoInicialDoNumero != 0 && expressao.charAt(posicaoInicialDoNumero - 1) == ')') throw new Error("Parêntesis mal colocado");
+        if ( ! CARACTERES_ACEITOS_EM_NUMEROS.contains(primeiroCharDoNumero)) throw new IllegalArgumentException("Erro interno: Primeiro char errado");//caso o primeiro char seja errado
+        else if (posicaoInicialDoNumero != 0 && expressao.charAt(posicaoInicialDoNumero - 1) == ')') throw new IllegalArgumentException("Parêntesis mal colocado");
 
         for (int i = posicaoInicialDoNumero + 1; i < expressao.length(); i++) {
             char c = expressao.charAt(i);
@@ -313,9 +319,9 @@ public class Avaliador {
                 posicaoFinalDoNumero = i;
             } else if (c == 'E'){//senao, se for E (notação científica)...
                 //aqui é o cuidado com eventuais erros do usuário com a notação científica
-                if (i == expressao.length()-1 || (expressao.charAt(i+1) != '+' && expressao.charAt(i+1) != '-' && !NUMEROS.contains(expressao.charAt(i+1)))) throw new Error("Erro na notação científica 'E'");
+                if (i == expressao.length()-1 || (expressao.charAt(i+1) != '+' && expressao.charAt(i+1) != '-' && !NUMEROS.contains(expressao.charAt(i+1)))) throw new IllegalArgumentException("Erro na notação científica 'E'");
                 else if (expressao.charAt(i+1) == '+' || expressao.charAt(i+1) == '-'){
-                    if (i+1 == expressao.length()-1 || !NUMEROS.contains(expressao.charAt(i+2))) throw new Error("Erro na notação científica 'E'");
+                    if (i+1 == expressao.length()-1 || !NUMEROS.contains(expressao.charAt(i+2))) throw new IllegalArgumentException("Erro na notação científica 'E'");
                 }
                 //caso tudo ok:
                 i++;
@@ -328,7 +334,7 @@ public class Avaliador {
 
         if (posicaoFinalDoNumero != expressao.length()-1) {
             char charDepoisDoNumero = expressao.charAt(posicaoFinalDoNumero + 1);
-            if (charDepoisDoNumero != ' ' && charDepoisDoNumero != ')' && !OPERADORES.contains(charDepoisDoNumero)) throw new Error("'" + charDepoisDoNumero + "'" +" mal colocado");
+            if (charDepoisDoNumero != ' ' && charDepoisDoNumero != ')' && !OPERADORES.contains(charDepoisDoNumero)) throw new IllegalArgumentException("'" + charDepoisDoNumero + "'" +" mal colocado");
         }
         
         return posicaoFinalDoNumero;
@@ -341,8 +347,9 @@ public class Avaliador {
      * @param posicaoFinal Posição do fim do primeiro número a ser tratado (inclusive).
      * @param expressao Expressão matemática.
      * @return Resultado das contas.
+     * @throws IllegalArgumentException
      */
-    private double resolverNumero(int posicaoInicial, int posicaoFinal, String expressao) throws Error {
+    private double resolverNumero(int posicaoInicial, int posicaoFinal, String expressao) throws IllegalArgumentException {
         if (expressao.charAt(0) == '+' || expressao.charAt(0) == '-'){//trata + +n, + -n, - +n, e - -n
             if (expressao.charAt(0) == '+') {
                 expressao = expressao.substring(1);
@@ -362,7 +369,7 @@ public class Avaliador {
         //caso depois do numero não acabou tudo nem o parentesis fechou:
         if ( ! (posicaoFinal+1 >= expressao.length() || expressao.charAt(posicaoFinal+1) == ')')){
             char operador = expressao.charAt(posicaoFinal+1);
-            if (!OPERADORES.contains(operador)) throw new Error("Erro no operador");
+            if (!OPERADORES.contains(operador)) throw new IllegalArgumentException("Operador " + operador +  " inexistente.");
             
             if (operador == '^') return resolverCadeiaDeExpoentes(posicaoInicial, posicaoFinal+1, expressao);
             else if (operador == '*' || operador == '/' || operador == '%') return resolverCadeiaDeMultiDivEMod(posicaoInicial, posicaoFinal+1, expressao);
@@ -390,8 +397,9 @@ public class Avaliador {
      * @param posicaoDoPrimeiroOperador Posição do primeiro '^'.
      * @param expressao Expressão matemática.
      * @return Resultado.
+     * @throws IllegalArgumentException
      */
-    private double resolverCadeiaDeExpoentes(int posicaoInicialDaCadeia, int posicaoDoPrimeiroOperador, String expressao) throws Error {
+    private double resolverCadeiaDeExpoentes(int posicaoInicialDaCadeia, int posicaoDoPrimeiroOperador, String expressao) throws IllegalArgumentException {
         //cuidado com "-x^n" (vs (-x)^n)
         if (expressao.charAt(posicaoInicialDaCadeia) == '-' && (posicaoInicialDaCadeia == 0 || expressao.charAt(posicaoInicialDaCadeia - 1) != '^')){
             return -1 * resolverCadeiaDeExpoentes(posicaoInicialDaCadeia + 1, posicaoDoPrimeiroOperador, expressao);
@@ -470,8 +478,9 @@ public class Avaliador {
      * @param posicaoDoPrimeiroOperador Posição do primeiro operador '^'.
      * @param expressao Expressão matemática.
      * @return Posição do primeiro "operador" diferente de '^'.
+     * @throws IllegalArgumentException
      */
-    private int acharPosicaoDoOperadorDepoisDaCadeiaDeExpoentes(int posicaoDoPrimeiroOperador, String expressao){
+    private int acharPosicaoDoOperadorDepoisDaCadeiaDeExpoentes(int posicaoDoPrimeiroOperador, String expressao) throws IllegalArgumentException {
         char operadorDepoisDaCadeiaDeExpoentes = '0';//pode ser '0' (nulo), ')', ou um operador que não seja '^'
         int posicaoDoOperadorDepoisDaCadeiaDeExpoentes = posicaoDoPrimeiroOperador;
 
@@ -492,8 +501,9 @@ public class Avaliador {
      * @param posicaoDoPrimeiroOperador Posição do primeiro operador.
      * @param expressao Expressão matemática.
      * @return Resultado.
+     * @throws IllegalArgumentException
      */
-    private double resolverCadeiaDeMultiDivEMod(int posicaoInicialDaCadeia, int posicaoDoPrimeiroOperador, String expressao) throws Error {
+    private double resolverCadeiaDeMultiDivEMod(int posicaoInicialDaCadeia, int posicaoDoPrimeiroOperador, String expressao) throws IllegalArgumentException {
         Double resultado = 0d; //o proprio resultado vira o primeiro termo na operacao seguinte
         Character primeiroOperador = expressao.charAt(posicaoDoPrimeiroOperador);
         Character segundoOperador = '0'; //acharOSegundoOperadorAdiante(posicaoDoPrimeiroOperador, expressao); //pode nao existir
@@ -578,8 +588,9 @@ public class Avaliador {
      * @param posicaoDoPrimeiroOperador Posição do primeiro operador '+' ou '-'.
      * @param expressao Expressão matemática.
      * @return Resultado.
+     * @throws IllegalArgumentException
      */
-    private double resolverCadeiaDeMaisEMenos(int posicaoInicialDaCadeia, int posicaoDoPrimeiroOperador, String expressao) throws Error {
+    private double resolverCadeiaDeMaisEMenos(int posicaoInicialDaCadeia, int posicaoDoPrimeiroOperador, String expressao) throws IllegalArgumentException {
         Double resultado = 0d;//o proprio resultado vira o primeiro termo na operacao seguinte
         Character primeiroOperador = expressao.charAt(posicaoDoPrimeiroOperador);
         Character segundoOperador = '0'; //acharOSegundoOperadorAdiante(posicaoDoPrimeiroOperador, expressao); //pode nao existir
@@ -666,8 +677,9 @@ public class Avaliador {
      * @param posicaoDoPrimeiroOperador Posição do primeiro operador.
      * @param expressao Expressão matemática.
      * @return Posição do segundo operador.
+     * @throws IllegalArgumentException
      */
-    private int acharPosicaoDoSegundoOperadorAdiante(int posicaoDoPrimeiroOperador, String expressao){
+    private int acharPosicaoDoSegundoOperadorAdiante(int posicaoDoPrimeiroOperador, String expressao) throws IllegalArgumentException{
         //pode ser que nem exista o segundo operador ou seja ')'
         int posicaoDoSegundoOperador = -1;
         
@@ -688,9 +700,10 @@ public class Avaliador {
      * @param n1 Primeiro número.
      * @param operador Operador ('^', '*', '/', '%', '+' ou '-').
      * @param n2 Segundo número.
+     * @throws IllegalArgumentException Caso não exista o operador.
      * @return Resultado.
      */
-    private double operar(double n1, char operador, double n2) throws Error {
+    private double operar(double n1, char operador, double n2) throws IllegalArgumentException {
         double resultado=0;
         switch (operador){
             case '^':
@@ -712,7 +725,7 @@ public class Avaliador {
                 resultado = n1-n2;
                 break;
             default:
-                throw new Error ("Erro no operador");
+                throw new IllegalArgumentException("Erro no operador");
         }
 
         return resultado;
@@ -721,10 +734,10 @@ public class Avaliador {
     /**
      * @param nomeDaVariavel O nome da variável cujo valor se quer obter.
      * @return O valor (número ou expressão matemática) da variável.
-     * @throws Error Erro personalizado se a variável não existir.
+     * @throws IllegalArgumentException Erro personalizado se a variável não existir.
      */
-    public String obterValorDaVariavel(String nomeDaVariavel)throws Error {
-        if (!nomesDasVariaveis.contains(nomeDaVariavel)) throw new Error("Não existe variável com esse nome");
+    public String obterValorDaVariavel(String nomeDaVariavel)throws IllegalArgumentException {
+        if (!nomesDasVariaveis.contains(nomeDaVariavel)) throw new IllegalArgumentException("Não existe variável com esse nome");
         return valoresDasVariaveis.get(nomesDasVariaveis.indexOf(nomeDaVariavel));
     }
 
@@ -755,19 +768,19 @@ public class Avaliador {
     /**
      * @param nomeAntigo Nome da variável a ter seu nome mudado.
      * @param nomeNovo Novo nome da variável.
-     * @throws Error Erro personalizado se houver nome vazio ou inválido.
+     * @throws IllegalArgumentException Erro personalizado se houver nome vazio ou inválido.
      */
-    public void mudarNomeDeVariavel(String nomeAntigo, String nomeNovo) throws Error {
-        if (nomeAntigo.length() == 0 || nomeNovo.length() == 0) throw new Error("Campo vazio");
+    public void mudarNomeDeVariavel(String nomeAntigo, String nomeNovo) throws IllegalArgumentException {
+        if (nomeAntigo.length() == 0 || nomeNovo.length() == 0) throw new IllegalArgumentException("Campo vazio");
 
         char primeiroChar = nomeNovo.charAt(0);
 
-        if (!nomesDasVariaveis.contains(nomeAntigo)) throw new Error("Não existe variável com esse nome");
-        else if (nomesDasVariaveis.contains(nomeNovo)) throw new Error("Já existe variável com esse nome");
-        else if ((primeiroChar != '_' && primeiroChar != '$' && !LETRAS.contains(primeiroChar))) throw new Error("Primeiro char do nome da variável inválido");
+        if (!nomesDasVariaveis.contains(nomeAntigo)) throw new IllegalArgumentException("Não existe variável com esse nome");
+        else if (nomesDasVariaveis.contains(nomeNovo)) throw new IllegalArgumentException("Já existe variável com esse nome");
+        else if ((primeiroChar != '_' && primeiroChar != '$' && !LETRAS.contains(primeiroChar))) throw new IllegalArgumentException("Primeiro char do nome da variável inválido");
         else {
             for (char c : nomeNovo.toCharArray()) {
-                if (!CARACTERES_ACEITOS_EM_VARIAVEIS.contains(c)) throw new Error("Nome da variável inválido");
+                if (!CARACTERES_ACEITOS_EM_VARIAVEIS.contains(c)) throw new IllegalArgumentException("Nome da variável inválido");
             }
         }
         //caso tudo ok:
@@ -779,11 +792,11 @@ public class Avaliador {
      * @see #mudarValorDeVariavel(String, String)
      * @param nomeDaVariavel Nome da variável a ter seu valor mudado.
      * @param valorNovo Número que será o novo valor da variável.
-     * @throws Error Erro personalizado se o nome vier vazio ou a variável não existir.
+     * @throws IllegalArgumentException Erro personalizado se o nome vier vazio ou a variável não existir.
      */
-    public void mudarValorDeVariavel(String nomeDaVariavel, double valorNovo) throws Error {
-        if (nomeDaVariavel.length() == 0) throw new Error("Campo vazio");
-        else if (!nomesDasVariaveis.contains(nomeDaVariavel)) throw new Error("Não existe variável com esse nome");
+    public void mudarValorDeVariavel(String nomeDaVariavel, double valorNovo) throws IllegalArgumentException {
+        if (nomeDaVariavel.length() == 0) throw new IllegalArgumentException("Campo vazio");
+        else if (!nomesDasVariaveis.contains(nomeDaVariavel)) throw new IllegalArgumentException("Não existe variável com esse nome");
         else {
         //caso tudo ok:
         valoresDasVariaveis.set(nomesDasVariaveis.indexOf(nomeDaVariavel), String.valueOf(valorNovo));
@@ -796,11 +809,11 @@ public class Avaliador {
      * @see #mudarValorDeVariavel(String, double)
      * @param nomeDaVariavel Nome da variável a ter seu valor mudado.
      * @param expressaoNova Expressão matemática que será o novo valor da variável.
-     * @throws Error Erro personalizado se o nome vier vazio ou a variável não existir.
+     * @throws IllegalArgumentException Erro personalizado se o nome vier vazio ou a variável não existir.
      */
-    public void mudarValorDeVariavel(String nomeDaVariavel, String expressaoNova) throws Error {
-        if (nomeDaVariavel.length() == 0 || expressaoNova.length() == 0) throw new Error("Campo vazio");
-        else if (!nomesDasVariaveis.contains(nomeDaVariavel)) throw new Error("Não existe variável com esse nome");
+    public void mudarValorDeVariavel(String nomeDaVariavel, String expressaoNova) throws IllegalArgumentException {
+        if (nomeDaVariavel.length() == 0 || expressaoNova.length() == 0) throw new IllegalArgumentException("Campo vazio");
+        else if (!nomesDasVariaveis.contains(nomeDaVariavel)) throw new IllegalArgumentException("Não existe variável com esse nome");
         else {
             preValidarExpressao(expressaoNova);
         }
@@ -813,19 +826,19 @@ public class Avaliador {
      * @see #criarVariavel(String, String)
      * @param nomeDaVariavel Nome da nova variável a ser criada.
      * @param valorDaVariavel Número que será o valor da nova variável.
-     * @throws Error Erro personalizado se o nome for inválido ou a variável já existir.
+     * @throws IllegalArgumentException Erro personalizado se o nome for inválido ou a variável já existir.
      */
-    public void criarVariavel(String nomeDaVariavel, double valorDaVariavel) throws Error {
-        if (nomeDaVariavel.length() == 0) throw new Error("Campo vazio");
+    public void criarVariavel(String nomeDaVariavel, double valorDaVariavel) throws IllegalArgumentException {
+        if (nomeDaVariavel.length() == 0) throw new IllegalArgumentException("Campo vazio");
 
         char primeiroChar = nomeDaVariavel.charAt(0);
-        //if (nomeDaVariavel.equals("")) throw new Error("Já existe variável com esse nome");
+        //if (nomeDaVariavel.equals("")) throw new IllegalArgumentException("Já existe variável com esse nome");
 
-        if (nomesDasVariaveis.contains(nomeDaVariavel)) throw new Error("Já existe variável com esse nome");
-        else if ((primeiroChar != '_' && primeiroChar != '$' && !LETRAS.contains(primeiroChar))) throw new Error("Primeiro char do nome da variável inválido");
+        if (nomesDasVariaveis.contains(nomeDaVariavel)) throw new IllegalArgumentException("Já existe variável com esse nome");
+        else if ((primeiroChar != '_' && primeiroChar != '$' && !LETRAS.contains(primeiroChar))) throw new IllegalArgumentException("Primeiro char do nome da variável inválido");
         else {
             for (char c : nomeDaVariavel.toCharArray()) {
-                if (!CARACTERES_ACEITOS_EM_VARIAVEIS.contains(c)) throw new Error("Nome da variável inválido");
+                if (!CARACTERES_ACEITOS_EM_VARIAVEIS.contains(c)) throw new IllegalArgumentException("Nome da variável inválido");
             }
         }
         //caso tudo ok:
@@ -839,17 +852,17 @@ public class Avaliador {
      * @see #criarVariavel(String, double)
      * @param nomeDaVariavel Nome da nova variável a ser criada.
      * @param expressaoDaVariavel Expressão matemática que será o valor da nova variável.
-     * @throws Error Erro personalizado se o nome for inválido ou a variável já existir.
+     * @throws IllegalArgumentException Erro personalizado se o nome for inválido ou a variável já existir.
      */
-    public void criarVariavel(String nomeDaVariavel, String expressaoDaVariavel) throws Error {
-        if (nomeDaVariavel.length() == 0 || expressaoDaVariavel.length() == 0) throw new Error("Campo vazio");
+    public void criarVariavel(String nomeDaVariavel, String expressaoDaVariavel) throws IllegalArgumentException {
+        if (nomeDaVariavel.length() == 0 || expressaoDaVariavel.length() == 0) throw new IllegalArgumentException("Campo vazio");
         char primeiroChar = nomeDaVariavel.charAt(0);
 
-        if (nomesDasVariaveis.contains(nomeDaVariavel)) throw new Error("Já existe variável com esse nome");
-        else if ((primeiroChar != '_' && primeiroChar != '$' && !LETRAS.contains(primeiroChar))) throw new Error("Primeiro char do nome da variável inválido");
+        if (nomesDasVariaveis.contains(nomeDaVariavel)) throw new IllegalArgumentException("Já existe variável com esse nome");
+        else if ((primeiroChar != '_' && primeiroChar != '$' && !LETRAS.contains(primeiroChar))) throw new IllegalArgumentException("Primeiro char do nome da variável inválido");
         else {
             for (char c : nomeDaVariavel.toCharArray()) {
-                if (!CARACTERES_ACEITOS_EM_VARIAVEIS.contains(c)) throw new Error("Nome da variável inválido");
+                if (!CARACTERES_ACEITOS_EM_VARIAVEIS.contains(c)) throw new IllegalArgumentException("Nome da variável inválido");
             }
 
             preValidarExpressao(expressaoDaVariavel);
@@ -861,10 +874,10 @@ public class Avaliador {
 
     /**
      * @param nomeDaVariavel Nome da variável a ser apagada.
-     * @throws Error "Não existe variável com esse nome".
+     * @throws IllegalArgumentException "Não existe variável com esse nome".
      */
-    public void apagarVariavel(String nomeDaVariavel) throws Error {
-        if (!nomesDasVariaveis.contains(nomeDaVariavel)) throw new Error("Não existe variável com esse nome");
+    public void apagarVariavel(String nomeDaVariavel) throws IllegalArgumentException {
+        if (!nomesDasVariaveis.contains(nomeDaVariavel)) throw new IllegalArgumentException("Não existe variável com esse nome");
         else { //caso tudo ok
             valoresDasVariaveis.remove(nomesDasVariaveis.indexOf(nomeDaVariavel));
             nomesDasVariaveis.remove(nomeDaVariavel);
