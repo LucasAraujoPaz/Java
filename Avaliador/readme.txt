@@ -22,7 +22,7 @@ OPERADORES:
 
 TRATAMENTO DE ERROS:
 
-Se o usuário cometer erros de sintaxe, esta classe lança erros tipo "Error" com mensagem personalizada.
+Se o usuário cometer erros de sintaxe, esta classe lança erros com mensagens personalizadas.
 
 ---
 
