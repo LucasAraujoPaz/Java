@@ -1,6 +1,6 @@
 AVALIADOR
 
-O arquivo Avaliador.java é uma classe Java (servindo de API quando instanciada):
+O arquivo Avaliador.java é uma classe Java (servindo de API quando instanciada) que:
 
 Avalia uma expressão matemática com ou sem variáveis previamente definidas pelo usuário.
 
