@@ -1,7 +1,7 @@
 package avaliador;
 
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ArrayList;
 
 /** Avalia uma expressão matemática com ou sem variáveis previamente definidas pelo usuário.
