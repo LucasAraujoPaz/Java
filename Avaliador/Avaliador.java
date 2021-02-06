@@ -1,7 +1,8 @@
 package avaliador;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
+import java.util.ArrayList;
 
 /** Avalia uma expressão matemática com ou sem variáveis previamente definidas pelo usuário.
 * <p>O modelo de número é tradicional: <i>+</i>(ou)<i>-123.456E+</i>(ou)<i>-789</i><br>
@@ -15,17 +16,17 @@ import java.util.Arrays;
 */
 public class Avaliador {
 
-    private ArrayList<String> nomesDasVariaveis = new ArrayList(){};
-    private ArrayList<String> valoresDasVariaveis = new ArrayList(){}; //<String>, pois pode receber até expressões
+    private List<String> nomesDasVariaveis = new ArrayList(){};
+    private List<String> valoresDasVariaveis = new ArrayList(){}; //<String>, pois pode receber até expressões
 
-    public static final ArrayList<Character> NUMEROS = new ArrayList(Arrays.asList(new Character[]{'0','1','2','3','4','5','6','7','8','9'}));
-    public static final ArrayList<Character> CARACTERES_ACEITOS_EM_NUMEROS = new ArrayList(Arrays.asList(new Character[]{'+','-','0','1','2','3','4','5','6','7','8','9','.','E'})); // E = (notação científica)
-    public static final ArrayList<Character> CARACTERES_ACEITOS_EM_VARIAVEIS = new ArrayList(Arrays.asList(new Character[]{'_','$','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9'}));
-    public static final ArrayList<Character> OPERADORES = new ArrayList(Arrays.asList(new Character[]{'^','*','/','%','+','-'}));// "^" exponencia
+    public static final List<Character> NUMEROS = new ArrayList(Arrays.asList(new Character[]{'0','1','2','3','4','5','6','7','8','9'}));
+    public static final List<Character> CARACTERES_ACEITOS_EM_NUMEROS = new ArrayList(Arrays.asList(new Character[]{'+','-','0','1','2','3','4','5','6','7','8','9','.','E'})); // E = (notação científica)
+    public static final List<Character> CARACTERES_ACEITOS_EM_VARIAVEIS = new ArrayList(Arrays.asList(new Character[]{'_','$','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9'}));
+    public static final List<Character> OPERADORES = new ArrayList(Arrays.asList(new Character[]{'^','*','/','%','+','-'}));// "^" exponencia
 
-    public static final ArrayList<Character> LETRAS = new ArrayList(Arrays.asList(new Character[]{'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'}));
+    public static final List<Character> LETRAS = new ArrayList(Arrays.asList(new Character[]{'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'}));
 
-    private static final ArrayList<Character> TODOS_OS_CARACTERES_ACEITOS_NO_AVALIADOR = new ArrayList(Arrays.asList(new Character[]{'+','-','0','1','2','3','4','5','6','7','8','9','.','E','(',')','^','*','/','%','+','-','$','_','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',' '})); //Símbolos base da classe (inclui espaco, _ e $)
+    private static final List<Character> TODOS_OS_CARACTERES_ACEITOS_NO_AVALIADOR = new ArrayList(Arrays.asList(new Character[]{'+','-','0','1','2','3','4','5','6','7','8','9','.','E','(',')','^','*','/','%','+','-','$','_','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',' '})); //Símbolos base da classe (inclui espaco, _ e $)
 
     /**Construtor vazio.<br>
      * Realize as avaliações de expressões matemáticas através do objeto instanciado.
@@ -114,7 +115,8 @@ public class Avaliador {
      * Dados um índice e uma expressão, acha o próximo char != ' ' à esquerda (será [0]) e à direita (será [1]).
      * @param posicaoInicial Posição inicial da busca.
      * @param expressao Expressão matemática.
-     * @return EsquerdaEDireita[0] é o 1º char à esquerda, EsquerdaEDireita[1] é o 1º char à direita.
+     * @return EsquerdaEDireita[0] é o 1º char à esquerda, EsquerdaEDireita[1] é o 1º char à direita.<br>
+     * Pode retornar '¬' (simbolizando nulo) em qualquer dos 2 lados (ou nos 2) se acabar a expressão
      */
     private Character[] acharProximosCaracteresPulandoEspacos(int posicaoInicial, String expressao) {
         Character[] EsquerdaEDireita = {'¬', '¬'}; //EsquerdaEDireita[0] é o 1º char à esquerda, EsquerdaEDireita[1] é o 1º char à direita
@@ -743,21 +745,21 @@ public class Avaliador {
 
     /**
      * @return Uma lista com os nomes das variáveis.*/
-    public ArrayList<String> obterNomesDasVariaveis(){
+    public List<String> obterNomesDasVariaveis(){
         return nomesDasVariaveis;
     }
 
     /**
      * @return Uma lista com os valores das variáveis.*/
-    public ArrayList<String> obterValoresDasVariaveis(){
+    public List<String> obterValoresDasVariaveis(){
         return valoresDasVariaveis;
     }
 
     /**
      * @return Um vetor cuja posição: <br>[0] é a lista dos nomes das variáveis; e<br>[1] é a lista dos valores das variáveis.*/
-    public ArrayList[] obterVariaveis(){
+    public List[] obterVariaveis(){
         //retorna um vetor com a lista dos nomes e lista das variaveis
-        ArrayList[] vetorComAListaDosNomesEAListaDosValores = new ArrayList[2];
+        List[] vetorComAListaDosNomesEAListaDosValores = new ArrayList[2];
 
         vetorComAListaDosNomesEAListaDosValores[0] = nomesDasVariaveis;
         vetorComAListaDosNomesEAListaDosValores[1] = valoresDasVariaveis;
