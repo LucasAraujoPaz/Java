@@ -2,7 +2,7 @@ AVALIADOR
 
 O arquivo Avaliador.java é uma classe Java (servindo de API quando instanciada) que:
 
-Avalia uma expressão matemática com ou sem variáveis previamente definidas pelo usuário.
+Avalia uma expressão matemática (em String) com ou sem variáveis previamente definidas pelo usuário.
 
 MODELO DE NÚMERO:
 
@@ -12,13 +12,13 @@ Obs.: '+' e '-' e a notação científica são opcionais, 'E' sempre maiúsculo.
 
 VARIÁVEIS:
 
-As variáveis recebem como valor um número (double) ou uma expressão matemática (String), a qual pode até citar outras variáveis.
+As variáveis recebem como nome uma String e como valor um número (double) ou uma expressão matemática (String), a qual pode até citar outras variáveis.
 
 Cuidado, pois pode haver loop se os valores das variáveis ficarem referenciando outras variáveis indefinidamente.
 
 OPERADORES:
 
-^ (Exponenciação), * , / , % (MOD), + , -
+^ (Exponenciação), * , / , % (Módulo), + , -
 
 TRATAMENTO DE ERROS:
 
