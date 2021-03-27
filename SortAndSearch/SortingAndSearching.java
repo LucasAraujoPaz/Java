@@ -95,8 +95,6 @@ class SortingAndSearching {
 			 
 		 } while (leftIndex != midIndex);
 		 
-		 if (element.compareTo((T) array[midIndex]) == 0) return midIndex;
-		 
 		 return indexOfElement;
 	 }
 }
